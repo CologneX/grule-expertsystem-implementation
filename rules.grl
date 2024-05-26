@@ -1,0 +1,109 @@
+rule InferSupportLevel "Infer the support level" {
+	when
+		MF.MemberStatus == "ok" &&
+		MF.Reason == "new_case" &&
+		MF.Problem == "serious"
+	then
+		MF.SupportLevel = "level_1";
+		Retract("InferSupportLevel");
+}
+
+rule InferSupportLevel2 "Infer the support level 2" {
+	when
+		MF.MemberStatus == "ok" &&
+		MF.Reason == "new_case" &&
+		MF.Problem == "non_serious"
+	then
+		MF.SupportLevel = "level_2";
+		Retract("InferSupportLevel2");
+}
+
+rule InferSupportLevel3 "Infer the support level 3" {
+	when
+		MF.MemberStatus == "ok" &&
+		MF.Reason == "follow_up_case" &&
+		MF.Problem == "serious"
+	then
+		MF.SupportLevel = "level_1";
+		Retract("InferSupportLevel3");
+}
+
+rule InferSupportLevel4 "Infer the support level 4" {
+	when
+		MF.MemberStatus == "ok" &&
+		MF.Reason == "follow_up_case" &&
+		MF.Problem == "non_serious"
+	then
+		MF.SupportLevel = "level_3";
+		Retract("InferSupportLevel4");
+}
+
+rule InferSupportLevel5 "Infer the support level 5" {
+	when
+		MF.MemberStatus == "ok" &&
+		MF.Reason == "information_other"
+	then
+		MF.SupportLevel = "information_other";
+		Retract("InferSupportLevel5");
+}
+
+rule InferSupportLevel6 "Infer the support level 6" {
+	when
+		MF.MemberStatus == "not_ok"
+	then
+		MF.SupportLevel = "non_member";
+		Retract("InferSupportLevel6");
+}
+
+rule InferProblemSeverity1 "Infer the problem severity 1" {
+	when
+		MF.Temperature == "normal" &&
+		MF.OtherSymptoms == "yes"
+	then
+		MF.Problem = "serious";
+		Retract("InferProblemSeverity1");
+}
+
+rule InferProblemSeverity2 "Infer the problem severity 2" {
+	when
+		MF.Temperature == "normal" &&
+		MF.OtherSymptoms == "no"
+	then
+		MF.Problem = "non_serious";
+		Retract("InferProblemSeverity2");
+}
+
+rule InferProblemSeverity3 "Infer the problem severity 3" {
+	when
+		MF.Temperature == "abnormal" ||
+		MF.Temperature == "unknown"
+	then
+		MF.Problem = "serious";
+		Retract("InferProblemSeverity3");
+}
+
+rule InferMemberStatus1 "Infer the member status 1" {
+	when
+		MF.MemberStatus == "yes" &&
+		MF.ValidID == "yes"
+	then
+		MF.MemberStatus = "ok";
+		Retract("InferMemberStatus1");
+}
+
+rule InferMemberStatus2 "Infer the member status 2" {
+	when
+		MF.ValidID == "no"
+	then
+		MF.MemberStatus = "not_ok";
+		Retract("InferMemberStatus2");
+}
+
+rule InferMemberStatus3 "Infer the member status 3" {
+	when
+		MF.MemberStatus == "no" &&
+		MF.ValidID == "yes"
+	then
+		MF.MemberStatus = "not_ok";
+		Retract("InferMemberStatus3");
+}
